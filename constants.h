@@ -1,0 +1,8 @@
+#ifndef CONSTANTS_H_INCLUDED
+#define CONSTANTS_H_INCLUDED
+
+#define STUDENT_VARIANT "6"
+#define STUDENT_GROUP "41703621"
+#define STUDENT_NAME "Рябцев Маркел"
+
+#endif // CONSTANTS_H_INCLUDED
