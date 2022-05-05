@@ -63,8 +63,8 @@ void do_task() {
         printf("Файл с фамилиями студентов не найден или пустой!\n");
     }
 
-
     printf("\n");
+    system("pause");
 }
 
 int fill_student_list(struct Student students[]) {
