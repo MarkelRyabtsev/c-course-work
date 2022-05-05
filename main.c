@@ -10,7 +10,7 @@
 
 void print_student_info();
 void do_task();
-void fill_student_list(struct Student students[]);
+int fill_student_list(struct Student students[]);
 int get_random_result();
 struct Result ms_to_result(int milliseconds);
 void sort_array(struct Student students[], int n);
@@ -41,23 +41,33 @@ void print_student_info() {
 }
 
 void do_task() {
-    struct Student students[100];
-    fill_student_list(students);
-    for (int i = 0; i < 100; i++) {
-        struct Result result = ms_to_result(students[i].result_ms);
-        printf("%d) %s - %d сек %d мс\n", i + 1, students[i].name, result.seconds, result.milliseconds);
+    struct Student *students = malloc(sizeof(struct Student) * 100000);
+    int count = fill_student_list(students);
+    if (count > 0) {
+        for (int i = 0; i < count; i++) {
+            struct Result result = ms_to_result(students[i].result_ms);
+            printf("%d) %s - %d сек %d мс\n", i + 1, students[i].name, result.seconds, result.milliseconds);
+        }
+        sort_array(students, count);
+        int best_count = 4;
+        if (count < best_count) {
+            best_count = count;
+        }
+        printf("-----------------------------------------Лучшие %d студента----------------------------------------\n", best_count);
+        for (int i = 0; i < best_count; i++) {
+            struct Result result = ms_to_result(students[i].result_ms);
+            printf("%d) %s - %d сек %d мс\n", i + 1, students[i].name, result.seconds, result.milliseconds);
+        }
     }
-    sort_array(students, 100);
-    printf("-----------------------------------------Лучшие 4 студента----------------------------------------\n");
-    for (int i = 0; i < 4; i++) {
-        struct Result result = ms_to_result(students[i].result_ms);
-        printf("%d) %s - %d сек %d мс\n", i + 1, students[i].name, result.seconds, result.milliseconds);
+    else {
+        printf("Файл с фамилиями студентов не найден или пустой!\n");
     }
+
 
     printf("\n");
 }
 
-void fill_student_list(struct Student students[100]) {
+int fill_student_list(struct Student students[]) {
     FILE* filePointer;
     int bufferLength = 255;
     char buffer[bufferLength];
@@ -77,6 +87,7 @@ void fill_student_list(struct Student students[100]) {
     }
 
     fclose(filePointer);
+    return counter;
 }
 
 int get_random_result() {
